@@ -30,7 +30,7 @@ app.post('/users/create', expressTryCatchWrapper(async (req, res) => {
     res.status(201).json({})
 }))
 
-app.patch('/users/update', async (req, res) => { })
+app.patch('/users/update/:email', async (req, res) => { })
 app.delete('/users/delete/:email', async (req, res) => {
     try {
         await dataservice.deleteUser(req.params.email)
