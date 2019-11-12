@@ -22,6 +22,10 @@ const dataservice = {
         if (!userObject.email) {
             throw new Error('You must provide an e-mail')
         }
+        const foundUser = users.find(i => i.email === userObject.email)
+        if (foundUser !== undefined) {
+            throw new Error('Not allowed ;)')
+        }
         users.push(userObject)
         return delayedPromise(true)
     },
