@@ -4,11 +4,14 @@
   "private": true,
   "dependencies": {
     "express": "^4.17.1",
+    "nodemon": "^1.19.4",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-scripts": "3.2.0"
   },
   "scripts": {
+    "develop-server": "nodemon server/index.js",
+    "start-server": "node server/index.js",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
