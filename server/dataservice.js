@@ -32,6 +32,7 @@ const dataservice = {
 
         const index = users.findIndex(i => i.email === userObject.email)
         if (index === -1) {
+            throw new Error(`Cannot update ${pkValue}`)
             // TODO throw exception
         }
         users.splice(index, 1, userObject)
@@ -43,6 +44,7 @@ const dataservice = {
         const index = users.findIndex(i => i.email === pkValue)
         if (index === -1) {
             // TODO throw exception
+            throw new Error(`Cannot delete ${pkValue}`)
         }
         users.splice(index, 1)
         return delayedPromise(true)
