@@ -4,17 +4,33 @@ const users = [
     { name: 'Tudor', email: 'tudor@example.com' },
 ]
 
+const delayedPromise = (data, err = null) => {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            if (err) {
+                reject(err)
+            } else {
+                resolve(data)
+            }
+        }, 500)
+    })
+}
+
 const dataservice = {
 
     createUser: (userObject = {}) => {
+        if (!userObject.email) {
+            throw new Error('You must provide an e-mail')
+        }
         users.push(userObject)
+        return delayedPromise(true)
     },
     getUsers: (opts = {}) => {
-        return users
+        return delayedPromise(users)
     },
     updateUser: (userObject) => {
 
-        const index = users.findIndex(i => DataTransferItem.email === userObject.email)
+        const index = users.findIndex(i => i.email === userObject.email)
         if (index === -1) {
             // TODO throw exception
         }
@@ -24,11 +40,12 @@ const dataservice = {
 
     //right now PK is the e-mail
     deleteUser: (pkValue) => {
-        const index = users.findIndex(i => DataTransferItem.email === pkValue)
+        const index = users.findIndex(i => i.email === pkValue)
         if (index === -1) {
             // TODO throw exception
         }
         users.splice(index, 1)
+        return delayedPromise(true)
     },
 }
 
