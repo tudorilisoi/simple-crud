@@ -5,25 +5,31 @@ const dataservice = require('./dataservice')
 const app = express()
 app.use(bodyParser.json());
 
-app.get('/users', async (req, res) => {
-    try {
-        const data = await dataservice.getUsers({})
-        res.status(200).json(data)
-    } catch (e) {
-        res.status(500).send(e.message)
+function expressTryCatchWrapper(fn) {
+    return async function (req, resp) {
+        try {
+            await fn(req, resp)
+        } catch (ex) {
+            console.error('expressTryCatch ERROR', ex)
+            resp.status(500).json({
+                message: 'SERVER_ERROR',
+                info: ex.toString()
+            })
+        }
     }
+}
 
-})
-app.post('/users/create', async (req, res) => {
-    try {
-        console.log(`REQ BODY`, req.body)
-        await dataservice.createUser(req.body)
-        res.status(201).json({})
-    } catch (e) {
-        res.status(500).send(e.message)
-    }
+app.get('/users', expressTryCatchWrapper(async (req, res) => {
+    const data = await dataservice.getUsers({})
+    res.status(200).json(data)
+}))
 
-})
+app.post('/users/create', expressTryCatchWrapper(async (req, res) => {
+    console.log(`REQ BODY`, req.body)
+    await dataservice.createUser(req.body)
+    res.status(201).json({})
+}))
+
 app.patch('/users/update', async (req, res) => { })
 app.delete('/users/delete/:email', async (req, res) => {
     try {
